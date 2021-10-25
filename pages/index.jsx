@@ -1,12 +1,9 @@
 import React from "react";
-//import "./App.module.css";
-import Form from "../pages/form";
+
+import Form from "../components/form";
 import Weather from "../components/weather";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "weather-icons/css/weather-icons.css";
 
-const Api_Key = "2dddca87eac46f4126ae969f4066037a";
-
+import config from "../config.json";
 class App extends React.Component {
   constructor() {
     super();
@@ -19,7 +16,7 @@ class App extends React.Component {
       temp_max: null,
       temp_min: null,
       description: "",
-      error: false,
+      error: false
     };
 
     this.weatherIcon = {
@@ -29,7 +26,7 @@ class App extends React.Component {
       Snow: "wi-snow",
       Atmosphere: "wi-fog",
       Clear: "wi-day-sunny",
-      Clouds: "wi-day-fog",
+      Clouds: "wi-day-fog"
     };
   }
 
@@ -73,9 +70,7 @@ class App extends React.Component {
     const city = e.target.elements.city.value;
 
     if (country && city) {
-      const api_call = await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?q=${city},${country}&appid=${Api_Key}`
-      );
+      const api_call = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city},${country}&appid=${config.apiKey}`);
 
       const response = await api_call.json();
 
@@ -87,7 +82,7 @@ class App extends React.Component {
         temp_max: this.calCelsius(response.main.temp_max),
         temp_min: this.calCelsius(response.main.temp_min),
         description: response.weather[0].description,
-        error: false,
+        error: false
       });
 
       // seting icons
@@ -96,15 +91,16 @@ class App extends React.Component {
       console.log(response);
     } else {
       this.setState({
-        error: true,
+        error: true
       });
     }
   };
 
   render() {
     return (
-      <div className="Apps p-3 ">
+      <div className="Apps p-3">
         <div className="container">
+          <h1 className="text-white py-4">XWeather.App</h1>
           <Form loadweather={this.getWeather} error={this.state.error} />
           <Weather
             cityname={this.state.city}
